@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -39,6 +39,10 @@ export default withFormik({
             .required('You must accept our terms of service.')
     })
 })(({values, errors, touched, status}) => {
+    const [users, setUsers] = useState([]);
+    useEffect(() => {
+        status && setUsers(users => [...users, status]);
+    },[status]);
     return (
         <div>
             <Form>
@@ -60,6 +64,14 @@ export default withFormik({
                 </label>
                 <button type='submit'>Submit</button>
             </Form>
+            {users.map(user => (
+                <div>
+                    <h3>{user.name}</h3>
+                    <p>Email: {user.email}</p>
+                    <p>password: {user.password}</p>
+                    <p>ToS accepted: {user.tos}</p>
+                </div>
+            ))}
         </div>
     );
 });
