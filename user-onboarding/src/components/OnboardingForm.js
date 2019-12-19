@@ -1,6 +1,7 @@
 import React from 'react';
 import { withFormik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 export default withFormik({
     mapPropsToValues() {
@@ -13,6 +14,14 @@ export default withFormik({
     },
     handleSubmit(values, { setStatus, resetForm }) {
         console.log('submitting', values);
+        axios
+            .post('https://reqres.in/api/users', values)
+            .then(res => {
+                console.log('success', res);
+                setStatus(res.data);
+                resetForm();
+            })
+            .catch(err => console.log(err.response));
     },
     validationSchema: Yup.object().shape({
         name: Yup.string()
