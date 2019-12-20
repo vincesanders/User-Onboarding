@@ -13,11 +13,9 @@ export default withFormik({
         }
     },
     handleSubmit(values, { setStatus, resetForm }) {
-        console.log('submitting', values);
         axios
             .post('https://reqres.in/api/users', values)
             .then(res => {
-                console.log('success', res);
                 setStatus(res.data);
                 resetForm();
             })
@@ -65,7 +63,7 @@ export default withFormik({
                 <button type='submit'>Submit</button>
             </Form>
             {users.map(user => (
-                <div>
+                <div key={user.createdAt}>
                     <h3>{user.name}</h3>
                     <p>Email: {user.email}</p>
                     <p>password: {user.password}</p>
